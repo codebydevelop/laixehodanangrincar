@@ -18,22 +18,22 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-white shadow-md">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
+        <div className="flex h-24 items-center justify-between">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-3">
-              <div className="relative w-12 h-12 md:w-14 md:h-14 overflow-hidden rounded-full border-2 border-blue-100 shadow-sm bg-white shrink-0">
-                <img 
-                  src="/images/logo.png" 
-                  alt="Rincar Logo" 
+              <div className="relative w-18 h-18 md:w-20 md:h-20 overflow-hidden rounded-full border-2 border-blue-100 shadow-sm bg-white shrink-0">
+                <img
+                  src="/images/logo.png"
+                  alt="Rincar Logo"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="flex flex-col justify-center mt-1">
-                <span className="text-[13px] md:text-[17px] font-black text-red-600 tracking-tight leading-none uppercase">
+                <span className="text-[15px] md:text-[21px] font-black text-red-600 tracking-tight leading-none uppercase">
                   Dịch vụ lái xe hộ Rincar
                 </span>
                 <div className="h-[1px] w-full bg-slate-300 my-1"></div>
-                <span className="text-[10px] md:text-[12px] font-bold text-slate-800 tracking-wide uppercase">
+                <span className="text-[11px] md:text-[14px] font-bold text-slate-800 tracking-wide uppercase">
                   An tâm | An toàn | Uy tín
                 </span>
               </div>
@@ -59,21 +59,20 @@ export default function Header() {
                 0906.499.078
               </a>
             </div>
-            <Link
-              href="/#booking-phone-input"
+            <button
               onClick={() => {
-                if (window.location.pathname === '/') {
-                  const el = document.getElementById('booking-phone-input')
-                  if (el) {
-                    el.focus()
-                    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-                  }
+                const element = document.getElementById('booking-phone-input')
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                  element.focus({ preventScroll: true })
+                } else {
+                  window.location.href = '/#booking-phone-input'
                 }
               }}
-              className="rounded-full bg-red-600 px-6 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-red-700"
+              className="rounded-full bg-red-600 px-6 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-red-700 cursor-pointer"
             >
               ĐẶT TÀI NGAY
-            </Link>
+            </button>
           </div>
 
           <button
@@ -88,7 +87,7 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden absolute top-20 left-0 w-full bg-white shadow-lg border-t">
+        <div className="md:hidden absolute top-24 left-0 w-full bg-white shadow-lg border-t">
           <div className="flex flex-col p-4 space-y-4">
             {navLinks.map((link) => (
               <Link

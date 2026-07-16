@@ -3,8 +3,9 @@ import { Calendar, User, ChevronRight } from 'lucide-react'
 import { createClient } from '@/utils/supabase/server'
 
 export const metadata = {
-  title: 'Tin Tức & Cẩm Nang Lái Xe | Lái Xe Hộ Đà Nẵng Rincar',
-  description: 'Cập nhật tin tức mới nhất về dịch vụ lái xe hộ, các quy định pháp luật và kinh nghiệm an toàn giao thông.',
+  title: 'Tin Tức & Cẩm Nang Lái Xe Hộ Tại Đà Nẵng | Rincar',
+  description: 'Cập nhật tin tức mới nhất về luật giao thông đường bộ, kinh nghiệm lái xe an toàn và cẩm nang di chuyển từ dịch vụ lái xe hộ RINCAR Đà Nẵng.',
+  keywords: 'tin tức lái xe hộ đà nẵng, cẩm nang lái xe hộ, tin tức giao thông đà nẵng',
 }
 
 export const revalidate = 60 // Revalidate cache every 60 seconds
