@@ -31,7 +31,7 @@ export default function FloatingSocials() {
       </a>
 
       <a
-        href="tel:0906499078"
+        href="tel:+84906499078"
         className="relative flex h-14 w-14 items-center justify-center rounded-full bg-red-600 text-white shadow-lg transition-transform hover:scale-110 animate-bounce [animation-delay:300ms]"
         aria-label="Phone"
       >

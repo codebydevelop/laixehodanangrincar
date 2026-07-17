@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { MapPin, Navigation, Clock, ShieldCheck, Banknote, Briefcase, Plane, Users, HeartPulse, ChevronRight, Phone, Timer, ClipboardCheck, CheckCircle, Star } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import AddressInput from '@/components/AddressInput'
 import { getLatestNews } from '@/app/(main)/actions'
 import { reverseGeocode, geocodeToCoords } from '@/lib/geocode'
@@ -11,31 +12,31 @@ const testimonials = [
   {
     name: "Anh Hoàng Minh",
     role: "Giám đốc Doanh nghiệp, Hải Châu",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&h=150&fit=crop",
+    avatar: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=150&h=150&fit=crop",
     text: "Dịch vụ <strong>lái xe hộ tại Đà Nẵng</strong> của RINCAR thực sự rất tuyệt vời. Hôm trước tôi có tiếp khách đối tác đến khuya, uống rượu bia không thể lái xe về. Tôi đặt tài xế chỉ 15 phút sau là có bạn đến đón, lái chiếc Mercedes của tôi rất mượt và cẩn thận."
   },
   {
     name: "Chị Thu Hương",
     role: "Khách du lịch từ Hà Nội",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&h=150&fit=crop",
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&h=150&fit=crop",
     text: "Tôi đi du lịch cùng gia đình vào Đà Nẵng, muốn tự lái xe đi Bà Nà và Hội An chơi nhưng do đường đông và mệt nên tôi đã quyết định <strong>thuê tài xế lái xe hộ Rincar</strong>. Bạn tài xế cực kỳ thân thiện, lịch sự, đóng vai trò như hướng dẫn viên bản địa."
   },
   {
     name: "Anh Quốc Bảo",
     role: "Kinh doanh tự do, Thanh Khê",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150&h=150&fit=crop",
+    avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=150&h=150&fit=crop",
     text: "Điều tôi tâm đắc nhất ở RINCAR là sự <strong>bảo mật thông tin riêng tư</strong> lịch trình. Thêm nữa là hãng có cam kết bảo hiểm va quẹt xe 100% nên rất an tâm giao chìa khóa xế cưng. Đây là dịch vụ <strong>tài xế lái xe hộ đưa người say về nhà</strong> đáng tin cậy nhất."
   },
   {
     name: "Anh Minh Đức",
     role: "Bác sĩ Bệnh viện Đa khoa Đà Nẵng",
-    avatar: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=150&h=150&fit=crop",
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=150&h=150&fit=crop",
     text: "Mỗi lần liên hoan khoa xong, tôi luôn tin dùng <strong>dịch vụ lái xe hộ Đà Nẵng</strong> của RINCAR. Sự nhanh chóng và đúng hẹn là ưu điểm lớn nhất của hãng. Các bạn tài xế ứng xử rất nhã nhặn, chuyên nghiệp."
   },
   {
     name: "Chị Phương Thảo",
     role: "Chủ thương hiệu Spa, Sơn Trà",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&h=150&fit=crop",
+    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=150&h=150&fit=crop",
     text: "Xe của mình là dòng SUV cỡ lớn khó đỗ, nhưng các bạn <strong>tài xế lái xe hộ Rincar</strong> căn lề cực chuẩn và đỗ xe rất gọn gàng. Cước phí lại được tính tự động, rõ ràng nên không bao giờ lo chặt chém."
   },
   {
@@ -649,9 +650,11 @@ export default function HomeContainer() {
 
             <div className="flex-1 relative">
               <div className="absolute -inset-4 bg-blue-100 rounded-[3rem] transform rotate-3 -z-10"></div>
-              <img
-                src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2070"
+              <Image
+                src="/images/xe.jpg"
                 alt="Tài xế chuyên nghiệp lái xe hộ Đà Nẵng"
+                width={800}
+                height={500}
                 className="rounded-[2.5rem] shadow-xl w-full object-cover h-[500px]"
               />
             </div>
@@ -873,7 +876,7 @@ export default function HomeContainer() {
               ))
             ) : (
               <div className="col-span-full text-center text-slate-500 py-8">
-                Đang tải tin tức...
+                Hiện tại chưa có tin tức nào
               </div>
             )}
           </div>

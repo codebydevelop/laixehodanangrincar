@@ -1,4 +1,5 @@
 import { ShieldCheck, Target, Users, Award, Eye, Compass, ClipboardCheck, ShieldAlert } from 'lucide-react'
+import Image from 'next/image'
 
 export const metadata = {
   title: 'Giới Thiệu Dịch Vụ Lái Xe Hộ Tại Đà Nẵng | Rincar',
@@ -44,9 +45,11 @@ export default function AboutPage() {
             <div className="flex-1 w-full">
               <div className="relative">
                 <div className="absolute -inset-4 bg-blue-100 rounded-3xl transform -rotate-3 -z-10"></div>
-                <img
-                  src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070"
+                <Image
+                  src="/images/xe.jpg"
                   alt="Lái xe hộ Đà Nẵng Rincar chuyên nghiệp"
+                  width={800}
+                  height={400}
                   className="rounded-2xl shadow-xl object-cover w-full h-[400px]"
                 />
               </div>
