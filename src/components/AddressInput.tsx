@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { MapPin, Navigation } from 'lucide-react'
+import { searchAddress, formatAddress, type NominatimResult } from '@/lib/geocode'
 
 interface AddressInputProps {
   label: string
@@ -24,10 +25,12 @@ export default function AddressInput({
   isGettingLocation,
   error
 }: AddressInputProps) {
-  const [suggestions, setSuggestions] = useState<any[]>([])
+  const [suggestions, setSuggestions] = useState<NominatimResult[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [loading, setLoading] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
+  // Dùng ref để truy cập suggestions mới nhất trong blur handler
+  const suggestionsRef = useRef<NominatimResult[]>([])
 
   // Handle click outside to close suggestions
   useEffect(() => {
@@ -42,33 +45,27 @@ export default function AddressInput({
 
   // Debounced search
   useEffect(() => {
-    if (!value || !showSuggestions) {
+    if (!value || value.length < 3 || !showSuggestions) {
       setSuggestions([])
       return
     }
 
     const timer = setTimeout(async () => {
       setLoading(true)
-      
-      let searchQuery = value;
-      const lowerVal = value.toLowerCase();
-      if (!lowerVal.includes('đà nẵng') && !lowerVal.includes('da nang') && 
-          !lowerVal.includes('hội an') && !lowerVal.includes('hoi an') && 
-          !lowerVal.includes('hà nội') && !lowerVal.includes('ha noi') && 
-          !lowerVal.includes('hcm') && !lowerVal.includes('hồ chí minh')) {
-        searchQuery = `${value}, Đà Nẵng`;
-      }
-
       try {
-        const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchQuery)}&format=json&addressdetails=1&limit=5&countrycodes=vn`, {
-          headers: {
-            'Accept-Language': 'vi-VN'
-          }
+        const data = await searchAddress(value)
+        // Lọc trùng theo địa chỉ đã format
+        const seen = new Set<string>()
+        const unique = data.filter((item) => {
+          const key = formatAddress(item)
+          if (seen.has(key)) return false
+          seen.add(key)
+          return true
         })
-        const data = await res.json()
-        setSuggestions(data)
-      } catch (error) {
-        console.error('Error fetching address:', error)
+        setSuggestions(unique)
+        suggestionsRef.current = unique
+      } catch (err) {
+        console.error('Error fetching address:', err)
       } finally {
         setLoading(false)
       }
@@ -77,9 +74,25 @@ export default function AddressInput({
     return () => clearTimeout(timer)
   }, [value, showSuggestions])
 
-  const handleSelect = (address: string) => {
-    onChange(address)
+  const handleSelect = (item: NominatimResult) => {
+    onChange(formatAddress(item))
     setShowSuggestions(false)
+    setSuggestions([])
+    suggestionsRef.current = []
+  }
+
+  // Khi blur mà chưa chọn gợi ý → tự động apply gợi ý đầu tiên
+  const handleBlur = () => {
+    // Delay nhỏ để không xung đột với sự kiện click vào item gợi ý
+    setTimeout(() => {
+      const first = suggestionsRef.current[0]
+      if (first) {
+        onChange(formatAddress(first))
+        setSuggestions([])
+        suggestionsRef.current = []
+      }
+      setShowSuggestions(false)
+    }, 200)
   }
 
   return (
@@ -101,8 +114,9 @@ export default function AddressInput({
             setShowSuggestions(true)
           }}
           onFocus={() => {
-            if (value) setShowSuggestions(true)
+            if (value && value.length >= 3) setShowSuggestions(true)
           }}
+          onBlur={handleBlur}
           className={`w-full pl-10 py-3.5 rounded-xl border border-white/20 bg-white/5 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all placeholder:text-slate-400 text-white ${onGetCurrentLocation ? 'pr-12' : 'pr-4'}`}
           placeholder={placeholder}
         />
@@ -131,21 +145,31 @@ export default function AddressInput({
             <div className="p-4 text-center text-sm text-slate-500">Đang tìm kiếm...</div>
           ) : (
             <ul>
-              {suggestions.map((item, index) => (
-                <li 
-                  key={index}
-                  onClick={() => handleSelect(item.display_name)}
-                  className="px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-slate-50 last:border-0 transition-colors"
-                >
-                  <div className="flex items-start gap-3">
-                    <MapPin size={16} className="text-slate-400 mt-0.5 shrink-0" />
-                    <div>
-                      <p className="text-sm font-medium line-clamp-1">{item.display_name.split(',')[0]}</p>
-                      <p className="text-xs text-slate-500 line-clamp-1">{item.display_name}</p>
+              {suggestions.map((item) => {
+                const formatted = formatAddress(item)
+                // Lấy phần đầu (tên đường/địa danh) và phần còn lại (quận/phường/TP)
+                const firstComma = formatted.indexOf(',')
+                const primaryText = firstComma > -1 ? formatted.slice(0, firstComma) : formatted
+                const secondaryText = firstComma > -1 ? formatted.slice(firstComma + 2) : ''
+
+                return (
+                  <li 
+                    key={item.place_id}
+                    onClick={() => handleSelect(item)}
+                    className="px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-slate-50 last:border-0 transition-colors"
+                  >
+                    <div className="flex items-start gap-3">
+                      <MapPin size={16} className="text-red-400 mt-0.5 shrink-0" />
+                      <div>
+                        <p className="text-sm font-medium line-clamp-1">{primaryText}</p>
+                        {secondaryText && (
+                          <p className="text-xs text-slate-500 line-clamp-1">{secondaryText}</p>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                )
+              })}
             </ul>
           )}
         </div>

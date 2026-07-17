@@ -26,7 +26,7 @@ export default function FloatingSocials() {
         className="relative flex h-14 w-14 items-center justify-center rounded-full bg-blue-500 text-white shadow-lg transition-transform hover:scale-110 animate-bounce [animation-delay:150ms]"
         aria-label="Zalo"
       >
-        <MessageCircle size={28} />
+        <span className="font-black text-[15px] tracking-tighter">Zalo</span>
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-50"></span>
       </a>
 

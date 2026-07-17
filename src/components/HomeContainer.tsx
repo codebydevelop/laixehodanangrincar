@@ -5,6 +5,7 @@ import { MapPin, Navigation, Clock, ShieldCheck, Banknote, Briefcase, Plane, Use
 import Link from 'next/link'
 import AddressInput from '@/components/AddressInput'
 import { getLatestNews } from '@/app/(main)/actions'
+import { reverseGeocode, geocodeToCoords } from '@/lib/geocode'
 
 const testimonials = [
   {
@@ -173,16 +174,8 @@ export default function HomeContainer() {
         async (position) => {
           const { latitude, longitude } = position.coords
           try {
-            // Reverse Geocoding via Nominatim
-            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`, {
-              headers: { 'Accept-Language': 'vi-VN' }
-            })
-            const data = await res.json()
-            if (data && data.display_name) {
-              setPickup(data.display_name)
-            } else {
-              setPickup(`${latitude}, ${longitude}`)
-            }
+            const address = await reverseGeocode(latitude, longitude)
+            setPickup(address)
           } catch (error) {
             console.error('Error in reverse geocoding', error)
             setPickup(`${latitude}, ${longitude}`)
@@ -207,15 +200,8 @@ export default function HomeContainer() {
         async (position) => {
           const { latitude, longitude } = position.coords
           try {
-            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`, {
-              headers: { 'Accept-Language': 'vi-VN' }
-            })
-            const data = await res.json()
-            if (data && data.display_name) {
-              setDropoff(data.display_name)
-            } else {
-              setDropoff(`${latitude}, ${longitude}`)
-            }
+            const address = await reverseGeocode(latitude, longitude)
+            setDropoff(address)
           } catch (error) {
             console.error('Error in reverse geocoding', error)
             setDropoff(`${latitude}, ${longitude}`)
@@ -265,29 +251,7 @@ export default function HomeContainer() {
     return Object.keys(newErrors).length === 0
   }
 
-  const geocodeAddress = async (address: string) => {
-    try {
-      let searchQuery = address;
-      const lowerVal = address.toLowerCase();
-      if (!lowerVal.includes('đà nẵng') && !lowerVal.includes('da nang') &&
-        !lowerVal.includes('hội an') && !lowerVal.includes('hoi an') &&
-        !lowerVal.includes('hà nội') && !lowerVal.includes('ha noi') &&
-        !lowerVal.includes('hcm') && !lowerVal.includes('hồ chí minh')) {
-        searchQuery = `${address}, Đà Nẵng`;
-      }
-
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchQuery)}&format=json&limit=1&countrycodes=vn`, {
-        headers: { 'Accept-Language': 'vi-VN' }
-      })
-      const data = await res.json()
-      if (data && data.length > 0) {
-        return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) }
-      }
-    } catch (e) {
-      console.error('Geocode error', e)
-    }
-    return null
-  }
+  const geocodeAddress = geocodeToCoords
 
   const getRouteDistance = async (lat1: number, lon1: number, lat2: number, lon2: number) => {
     try {

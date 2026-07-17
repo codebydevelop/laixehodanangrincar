@@ -21,10 +21,14 @@ export default function Header() {
         <div className="flex h-24 items-center justify-between">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-3">
-              <div className="relative w-18 h-18 md:w-20 md:h-20 overflow-hidden rounded-full border-2 border-blue-100 shadow-sm bg-white shrink-0">
-                <img
-                  src="/images/logo.png"
+              <div className="relative w-[85px] h-[85px] md:w-24 md:h-24 overflow-hidden rounded-full border-2 border-blue-100 shadow-sm bg-white shrink-0">
+                <Image
+                  src="/images/logoRincar.png"
                   alt="Rincar Logo"
+                  width={140}
+                  height={140}
+                  quality={100}
+                  priority
                   className="w-full h-full object-cover"
                 />
               </div>
