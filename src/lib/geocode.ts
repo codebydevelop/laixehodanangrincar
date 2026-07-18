@@ -1,11 +1,17 @@
-// Bounding box của Đà Nẵng (ưu tiên kết quả trong khu vực này)
-const DA_NANG_VIEWBOX = '107.85,15.95,108.35,16.35'
+// Bounding box mở rộng bao gồm Đà Nẵng + Hội An + Quảng Nam lân cận
+// lat min 15.7 để bao phủ Hội An (15.88), Duy Xuyên, v.v.
+const DA_NANG_VIEWBOX = '107.7,15.7,108.5,16.4'
 
 const CITY_KEYWORDS = [
   'đà nẵng', 'da nang', 'hội an', 'hoi an',
   'hà nội', 'ha noi', 'hcm', 'hồ chí minh', 'ho chi minh',
   'huế', 'hue', 'quảng nam', 'quang nam'
 ]
+
+const NOMINATIM_HEADERS = {
+  'Accept-Language': 'vi-VN,vi;q=0.9',
+  'User-Agent': 'RincarApp/1.0 (laixehodanang.com)'
+}
 
 /**
  * Chuyển display_name dài của Nominatim thành địa chỉ ngắn gọn dạng Việt Nam
@@ -89,30 +95,40 @@ export async function searchAddress(query: string): Promise<NominatimResult[]> {
   })
 
   const res = await fetch(`https://nominatim.openstreetmap.org/search?${params}`, {
-    headers: { 'Accept-Language': 'vi-VN,vi;q=0.9' }
+    headers: NOMINATIM_HEADERS
   })
-  return res.json()
+
+  // Nominatim trả về plain text nếu bị block, parse an toàn
+  const text = await res.text()
+  try {
+    return JSON.parse(text)
+  } catch {
+    console.error('Nominatim search error response:', text)
+    return []
+  }
 }
 
 /**
  * Reverse geocoding: tọa độ → địa chỉ ngắn gọn
+ * Gọi qua server-side proxy /api/geocode/reverse để đảm bảo User-Agent header hợp lệ
  */
 export async function reverseGeocode(lat: number, lon: number): Promise<string> {
-  const params = new URLSearchParams({
-    lat: lat.toString(),
-    lon: lon.toString(),
-    format: 'json',
-    addressdetails: '1',
-    zoom: '17', // zoom=17 cho kết quả chi tiết đến số nhà
-  })
+  try {
+    const res = await fetch(`/api/geocode/reverse?lat=${lat}&lon=${lon}`)
+    const text = await res.text()
+    let data: NominatimResult
+    try {
+      data = JSON.parse(text)
+    } catch {
+      console.error('Reverse geocode proxy error:', text)
+      return `${lat}, ${lon}`
+    }
 
-  const res = await fetch(`https://nominatim.openstreetmap.org/reverse?${params}`, {
-    headers: { 'Accept-Language': 'vi-VN,vi;q=0.9' }
-  })
-  const data: NominatimResult = await res.json()
-
-  if (data && data.display_name) {
-    return formatAddress(data)
+    if (data && data.display_name) {
+      return formatAddress(data)
+    }
+  } catch (e) {
+    console.error('Reverse geocode error:', e)
   }
   return `${lat}, ${lon}`
 }

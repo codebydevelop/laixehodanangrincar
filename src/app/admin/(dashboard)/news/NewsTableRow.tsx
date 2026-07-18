@@ -36,6 +36,13 @@ export default function NewsTableRow({ item }: { item: any }) {
       </td>
       <td className="p-4 align-top text-right">
         <div className="flex justify-end gap-2">
+          <Link
+            href={`/tin-tuc/${item.slug}`}
+            target="_blank"
+            className="text-sm text-green-500 hover:text-green-700 font-medium px-3 py-1 bg-green-50 hover:bg-green-100 rounded-md transition-colors"
+          >
+            Xem
+          </Link>
           {/* <Link
             href={`/admin/news/${item.id}`}
             className="text-sm text-blue-500 hover:text-blue-700 font-medium px-3 py-1 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"

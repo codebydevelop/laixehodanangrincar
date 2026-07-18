@@ -187,7 +187,8 @@ export default function HomeContainer() {
         (error) => {
           alert('Không thể lấy vị trí hiện tại. Vui lòng cấp quyền truy cập vị trí.')
           setIsGettingLocation(false)
-        }
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       )
     } else {
       alert('Trình duyệt của bạn không hỗ trợ lấy vị trí.')
@@ -213,7 +214,8 @@ export default function HomeContainer() {
         () => {
           alert('Không thể lấy vị trí hiện tại. Vui lòng cấp quyền truy cập vị trí.')
           setIsGettingDropoffLocation(false)
-        }
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       )
     } else {
       alert('Trình duyệt của bạn không hỗ trợ lấy vị trí.')
@@ -221,18 +223,21 @@ export default function HomeContainer() {
   }
 
   const calculatePrice = (km: number) => {
-    if (km <= 5) return 120000
-    // Lấy phần vượt quá 5km, làm tròn lên (VD: 5.2km -> tính thêm 1km)
+    // 5km = 120k → mỗi km trong 5km đầu = 24k
+    // Từ km thứ 6 trở lên mỗi km thêm = 12k
+    if (km <= 5) return Math.round(km * 24000)
     return 120000 + Math.ceil(km - 5) * 12000
   }
 
-  const validateForm = () => {
+  const validateForm = (isBooking: boolean = true) => {
     const newErrors: typeof errors = {}
 
-    if (!phone) {
-      newErrors.phone = 'Vui lòng nhập số điện thoại.'
-    } else if (!/^(0|\+84)[0-9]{9}$/.test(phone)) {
-      newErrors.phone = 'Số điện thoại không hợp lệ (VD: 0906499078)'
+    if (isBooking) {
+      if (!phone) {
+        newErrors.phone = 'Vui lòng nhập số điện thoại.'
+      } else if (!/^(0|\+84)[0-9]{9}$/.test(phone)) {
+        newErrors.phone = 'Số điện thoại không hợp lệ (VD: 0906499078)'
+      }
     }
     if (!pickup) {
       newErrors.pickup = 'Vui lòng nhập điểm đón.'
@@ -268,7 +273,7 @@ export default function HomeContainer() {
   }
 
   const handleCalculate = async () => {
-    if (!validateForm()) return
+    if (!validateForm(false)) return
     setLoading(true)
     try {
       // Bước 1: Geocode địa chỉ
@@ -295,7 +300,18 @@ export default function HomeContainer() {
         setErrors(prev => ({ ...prev, dropoff: 'Điểm đến không được trùng với điểm đón.' }))
         setLoading(false); return
       }
-      const calculatedPrice = calculatePrice(distanceKm)
+      let calculatedPrice = calculatePrice(distanceKm);
+      if (serviceType === 'Theo giờ') {
+        calculatedPrice = 150000; // Giá mặc định 150k/giờ
+      } else if (serviceType === 'Theo ngày') {
+        calculatedPrice = 1000000; // Giá mặc định 1 triệu/ngày
+      }
+
+      // Phụ phí ban đêm từ 23h - 06h
+      if (timeFrame === 'Từ 23h đến 06h') {
+        calculatedPrice += 30000;
+      }
+
       setDistance(distanceKm)
       setPrice(calculatedPrice)
     } catch {
@@ -529,17 +545,22 @@ export default function HomeContainer() {
 
                 {/* Price card */}
                 {distance !== null && price !== null && (
-                  <div className="my-2 p-5 bg-white/10 backdrop-blur-md rounded-xl border border-blue-400/30 animate-in fade-in zoom-in duration-300 shadow-xl">
-                    <div className="flex justify-between items-center mb-3 pb-3 border-b border-white/10">
+                  <div className="my-2 p-5 bg-white/10 backdrop-blur-md rounded-xl border border-blue-400/30 animate-in fade-in zoom-in duration-300 shadow-xl space-y-2.5">
+                    <div className="flex justify-between items-center pb-2.5 border-b border-white/10">
                       <span className="text-blue-100 font-medium">Khoảng cách lộ trình:</span>
                       <span className="font-bold text-lg text-white">{distance} km</span>
                     </div>
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center pt-1">
                       <span className="text-blue-100 font-medium">Cước phí tạm tính:</span>
-                      <span className="font-bold text-2xl text-yellow-400">{price.toLocaleString('vi-VN')} đ</span>
+                      <span className="font-bold text-2xl text-yellow-400">
+                        {price.toLocaleString('vi-VN')} đ
+                        {serviceType === 'Theo giờ' ? ' / giờ' : ''}
+                        {serviceType === 'Theo ngày' ? ' / ngày' : ''}
+                      </span>
                     </div>
                   </div>
                 )}
+
 
                 <button
                   onClick={handleBooking}

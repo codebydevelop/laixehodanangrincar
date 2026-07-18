@@ -6,12 +6,13 @@ import { Calendar, User, ChevronLeft } from 'lucide-react'
 // Cấu hình revalidate để ISR
 export const revalidate = 60
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const supabase = await createClient()
   const { data } = await supabase
     .from('news')
     .select('title, excerpt')
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .single()
 
   if (!data) return { title: 'Không tìm thấy bài viết' }
@@ -22,13 +23,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default async function NewsDetailPage({ params }: { params: { slug: string } }) {
+export default async function NewsDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const supabase = await createClient()
 
   const { data: article } = await supabase
     .from('news')
     .select('*')
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .eq('is_published', true)
     .single()
 
