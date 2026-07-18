@@ -86,7 +86,7 @@ export default function ContactForm() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold mb-1 text-blue-50">Email hỗ trợ</h3>
-                  <p className="text-blue-200">longhalo43dn@gmail.com</p>
+                  <p className="text-blue-200">Laixehodanangrincar@gmail.com</p>
                 </div>
               </div>
 
