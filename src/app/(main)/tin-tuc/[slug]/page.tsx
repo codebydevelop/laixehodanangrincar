@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Calendar, User, ChevronLeft } from 'lucide-react'
 
+import Breadcrumb from '@/components/Breadcrumb'
+
 // Cấu hình revalidate để ISR
 export const revalidate = 60
 
@@ -41,9 +43,11 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   return (
     <div className="bg-slate-50 min-h-screen py-12">
       <div className="container mx-auto px-4 max-w-4xl">
-        <Link href="/tin-tuc" className="inline-flex items-center text-slate-500 hover:text-blue-600 mb-8 transition-colors font-medium">
-          <ChevronLeft size={20} className="mr-1" /> Quay lại danh sách tin
-        </Link>
+        <Breadcrumb items={[
+          { label: 'Trang chủ', href: '/' }, 
+          { label: 'Tin tức', href: '/tin-tuc' },
+          { label: article.title, href: `/tin-tuc/${article.slug}` }
+        ]} />
 
         <article className="bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100">
           {article.image_url && (

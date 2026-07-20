@@ -33,20 +33,25 @@ export async function saveNews(formData: FormData) {
     const bytes = await imageFile.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    // Tạo thư mục nếu chưa có
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'news')
-    try {
-      await mkdir(uploadDir, { recursive: true })
-    } catch (e) {}
+    const cloudinary = require('cloudinary').v2
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    })
 
-    // Tạo tên file duy nhất
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-    const ext = path.extname(imageFile.name) || '.jpg'
-    const filename = uniqueSuffix + ext
-    const filepath = path.join(uploadDir, filename)
+    const uploadResult = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { folder: 'datxehorincar/news' },
+        (error: any, result: any) => {
+          if (error) reject(error)
+          else resolve(result)
+        }
+      )
+      uploadStream.end(buffer)
+    })
 
-    await writeFile(filepath, buffer)
-    image_url = `/uploads/news/${filename}`
+    image_url = (uploadResult as any).secure_url
   }
 
   const supabase = await createClient()

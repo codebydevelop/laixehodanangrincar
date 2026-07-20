@@ -1,7 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
 import NewsTableRow from './NewsTableRow'
-import AutoPostButton from './AutoPostButton'
 
 export default async function AdminNews() {
   const supabase = await createClient()
@@ -17,7 +16,6 @@ export default async function AdminNews() {
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-3xl font-bold text-slate-800">Quản Lý Tin Tức</h2>
         <div className="flex">
-          <AutoPostButton />
           <Link 
             href="/admin/news/new" 
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"

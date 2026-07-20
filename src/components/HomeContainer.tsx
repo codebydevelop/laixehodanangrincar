@@ -616,6 +616,57 @@ export default function HomeContainer() {
         </div>
       </section>
 
+      {/* Pricing Table Section */}
+      <section className="py-20 bg-slate-900 text-white relative z-20">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="text-center mb-12">
+            <span className="text-blue-400 font-bold text-sm uppercase tracking-wider block mb-2">Báo Giá Công Khai</span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Bảng Giá Dịch Vụ Lái Xe Hộ Tại Đà Nẵng</h2>
+            <div className="h-1.5 w-20 bg-blue-500 mx-auto rounded mb-4"></div>
+            <p className="text-slate-300">Minh bạch giá cước, không lo chặt chém. Cam kết rẻ nhất thị trường Đà Nẵng.</p>
+          </div>
+          
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 overflow-hidden shadow-2xl">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-white/10 text-blue-100">
+                  <th className="p-4 md:p-6 font-bold border-b border-white/10 text-lg">Gói Dịch Vụ</th>
+                  <th className="p-4 md:p-6 font-bold border-b border-white/10 text-lg">Mức Giá</th>
+                  <th className="p-4 md:p-6 font-bold border-b border-white/10 text-lg hidden md:table-cell">Ghi Chú</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/10">
+                <tr className="hover:bg-white/5 transition-colors">
+                  <td className="p-4 md:p-6 font-medium text-blue-300">1 Chuyến (Dưới 5km)</td>
+                  <td className="p-4 md:p-6 font-bold text-yellow-400 text-xl">120.000 VNĐ</td>
+                  <td className="p-4 md:p-6 text-slate-300 hidden md:table-cell">Trọn gói 5km đầu tiên</td>
+                </tr>
+                <tr className="hover:bg-white/5 transition-colors">
+                  <td className="p-4 md:p-6 font-medium text-blue-300">1 Chuyến (Từ km thứ 6)</td>
+                  <td className="p-4 md:p-6 font-bold text-yellow-400 text-xl">12.000 VNĐ / km</td>
+                  <td className="p-4 md:p-6 text-slate-300 hidden md:table-cell">Tính thêm trên mỗi km vượt</td>
+                </tr>
+                <tr className="hover:bg-white/5 transition-colors">
+                  <td className="p-4 md:p-6 font-medium text-blue-300">Theo Giờ</td>
+                  <td className="p-4 md:p-6 font-bold text-yellow-400 text-xl">150.000 VNĐ / giờ</td>
+                  <td className="p-4 md:p-6 text-slate-300 hidden md:table-cell">Chờ đợi tiệc tùng, sự kiện</td>
+                </tr>
+                <tr className="hover:bg-white/5 transition-colors">
+                  <td className="p-4 md:p-6 font-medium text-blue-300">Theo Ngày</td>
+                  <td className="p-4 md:p-6 font-bold text-yellow-400 text-xl">1.000.000 VNĐ / ngày</td>
+                  <td className="p-4 md:p-6 text-slate-300 hidden md:table-cell">Đi tour, đi tỉnh lân cận</td>
+                </tr>
+                <tr className="hover:bg-white/5 transition-colors">
+                  <td className="p-4 md:p-6 font-medium text-blue-300 flex items-center gap-2">Phụ phí ban đêm <span className="px-2 py-0.5 bg-red-500/20 text-red-300 text-xs rounded border border-red-500/30 whitespace-nowrap">Lưu ý</span></td>
+                  <td className="p-4 md:p-6 font-bold text-yellow-400 text-xl">+30.000 VNĐ</td>
+                  <td className="p-4 md:p-6 text-slate-300 hidden md:table-cell">Khung giờ từ 23h00 đến 06h00 sáng</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       {/* When to use */}
       <section className="py-20 bg-slate-50">
         <div className="container mx-auto px-4">

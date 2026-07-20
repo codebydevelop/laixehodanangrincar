@@ -7,6 +7,8 @@ export const metadata = {
   keywords: 'giới thiệu lái xe hộ đà nẵng, sứ mệnh rincar, giá trị cốt lõi rincar, thuê tài xế lái xe hộ đà nẵng',
 }
 
+import Breadcrumb from '@/components/Breadcrumb'
+
 export default function AboutPage() {
   return (
     <div className="bg-slate-50 min-h-screen">
@@ -14,6 +16,7 @@ export default function AboutPage() {
       <section className="relative py-24 bg-slate-900 text-white overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2070')] bg-cover bg-center opacity-20"></div>
         <div className="container relative z-10 mx-auto px-4 text-center">
+          <Breadcrumb items={[{ label: 'Trang chủ', href: '/' }, { label: 'Giới thiệu', href: '/gioi-thieu' }]} />
           <h1 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight">
             VỀ RINCAR - LÁI XE HỘ TẠI ĐÀ NẴNG
           </h1>

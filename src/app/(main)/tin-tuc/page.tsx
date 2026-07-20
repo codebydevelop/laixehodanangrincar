@@ -8,6 +8,8 @@ export const metadata = {
   keywords: 'tin tức lái xe hộ đà nẵng, cẩm nang lái xe hộ, tin tức giao thông đà nẵng',
 }
 
+import Breadcrumb from '@/components/Breadcrumb'
+
 export const revalidate = 60 // Revalidate cache every 60 seconds
 
 export default async function NewsPage() {
@@ -24,7 +26,8 @@ export default async function NewsPage() {
     <div className="bg-slate-50 min-h-screen">
       {/* Header */}
       <div className="bg-slate-900 text-white py-16">
-        <div className="container mx-auto px-4 text-center">
+        <div className="container mx-auto px-4 text-center flex flex-col items-center">
+          <Breadcrumb items={[{ label: 'Trang chủ', href: '/' }, { label: 'Tin tức', href: '/tin-tuc' }]} />
           <h1 className="text-3xl md:text-4xl font-bold mb-4">Tin Tức & Cẩm Nang Lái Xe</h1>
           <p className="text-slate-400 max-w-2xl mx-auto">
             Cập nhật những thông tin mới nhất về dịch vụ, luật giao thông và các mẹo hay trên mọi nẻo đường.
