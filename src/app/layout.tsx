@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "Lái xe hộ Đà Nẵng Rincar",
   description: "Dịch vụ tài xế lái xe hộ an toàn, chuyên nghiệp tại Đà Nẵng. Đặt tài xế 24/7.",
   keywords: "lái xe hộ đà nẵng, tài xế lái xe hộ, thuê tài xế đà nẵng, rincar",
+  verification: {
+    google: "Y-hgzCVgoyKuD8o07QvdMWwwGMV17DW8OZa41o3eo78",
+  },
   openGraph: {
     title: 'Lái xe hộ Đà Nẵng Rincar',
     description: 'Dịch vụ tài xế lái xe hộ an toàn, chuyên nghiệp tại Đà Nẵng. Đặt tài xế 24/7.',
