@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://laixehodanangrincar.vercel.app"),
+  metadataBase: new URL("https://www.laixehodanangrincar.com"),
   title: "Lái xe hộ Đà Nẵng Rincar",
   description: "Dịch vụ tài xế lái xe hộ an toàn, chuyên nghiệp tại Đà Nẵng. Đặt tài xế 24/7.",
   keywords: "lái xe hộ đà nẵng, tài xế lái xe hộ, thuê tài xế đà nẵng, rincar",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Lái xe hộ Đà Nẵng Rincar',
     description: 'Dịch vụ tài xế lái xe hộ an toàn, chuyên nghiệp tại Đà Nẵng. Đặt tài xế 24/7.',
-    url: 'https://laixehodanangrincar.vercel.app',
+    url: 'https://www.laixehodanangrincar.com',
     siteName: 'Rincar',
     images: [
       {
@@ -50,9 +50,9 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               name: "Lái xe hộ Đà Nẵng Rincar",
-              image: "https://laixehodanangrincar.vercel.app/images/logoRincar.png",
-              "@id": "https://laixehodanangrincar.vercel.app",
-              url: "https://laixehodanangrincar.vercel.app",
+              image: "https://www.laixehodanangrincar.com/images/logoRincar.png",
+              "@id": "https://www.laixehodanangrincar.com",
+              url: "https://www.laixehodanangrincar.com",
               telephone: "0906499078",
               address: {
                 "@type": "PostalAddress",
