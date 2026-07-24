@@ -11,7 +11,7 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <MapPin className="shrink-0 mt-0.5 text-blue-400" size={18} />
-                <span>Thành phố Đà Nẵng</span>
+                <span>37 Nguyễn Phan Vinh, P. Sơn Trà, Đà Nẵng</span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="shrink-0 text-red-400" size={18} />

@@ -56,7 +56,9 @@ export default function RootLayout({
               telephone: "0906499078",
               address: {
                 "@type": "PostalAddress",
+                streetAddress: "37 Nguyễn Phan Vinh, Phường Sơn Trà",
                 addressLocality: "Đà Nẵng",
+                addressRegion: "Đà Nẵng",
                 addressCountry: "VN"
               },
               geo: {
